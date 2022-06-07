@@ -8,9 +8,8 @@
 class IObjects
 {
 public:
-	virtual ~IObjects() = default;
+    virtual ~IObjects() = default;
 
-	virtual void operator<<(std::shared_ptr<IFileReader> reader) noexcept(false) = 0;
-	virtual const char* getObjectType() const = 0;
+    virtual void operator<<(std::shared_ptr<IFileReader> reader) noexcept(false) = 0;
+    virtual const char* getObjectType() const = 0;
 };
-

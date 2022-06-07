@@ -9,20 +9,20 @@
 
 struct Item
 {
-	std::string name;
-	double priceWoTax;
-	float taxPercent;
+    std::string name;
+    double priceWoTax;
+    float taxPercent;
 };
 
 class Items : public IObjects
 {
 public:
-	~Items() = default;
+    ~Items() = default;
 
-	void operator<<(std::shared_ptr<IFileReader> reader) noexcept(false) override;
-	const char* getObjectType() const override;
+    void operator<<(std::shared_ptr<IFileReader> reader) noexcept(false) override;
+    const char* getObjectType() const override;
 
-	const Item* getItem(uint64_t key) const;
+    const Item* getItem(uint64_t key) const;
 private:
-	std::map<uint64_t, Item> mItems;
+    std::map<uint64_t, Item> mItems;
 };
