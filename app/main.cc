@@ -3,11 +3,11 @@
 #include <vector>
 #include <memory>
 
-#include "amazing/objects/Items.h"
-#include "amazing/objects/Discounts.h"
-#include "amazing/objects/Orders.h"
-#include "amazing/objects/ProcessedOrders.h"
-#include "amazing/file_reader/CsvReader.h"
+#include <objects/Items.h>
+#include <objects/Discounts.h>
+#include <objects/Orders.h>
+#include <objects/ProcessedOrders.h>
+#include <file_reader/CsvReader.h>
 
 // argv[1] shall be path to the items CSV
 // argv[2] shall be path to the discounts CSV
