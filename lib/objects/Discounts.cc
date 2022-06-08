@@ -5,6 +5,11 @@
 #define DISCOUNTS_NUM_OF_COLS 2
 #define EAN13_LEN 13
 
+bool Discount::operator==(const Discount& other) const
+{
+    return this->discountPercent == other.discountPercent;
+}
+
 void Discounts::operator<<(std::shared_ptr<IFileReader> reader) noexcept(false)
 {
     Discount* item;

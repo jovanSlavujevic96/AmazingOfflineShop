@@ -3,6 +3,11 @@
 #define ORDERS_NUM_OF_COLS 2
 #define EAN13_LEN 13
 
+bool Order::operator==(const Order& other) const
+{
+    return this->quantity == other.quantity;
+}
+
 void Orders::operator<<(std::shared_ptr<IFileReader> reader) noexcept(false)
 {
     Order* item;

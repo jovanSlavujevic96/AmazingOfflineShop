@@ -24,9 +24,6 @@ int main(int argc, char* argv[])
     ProcessedOrders processed_orders;
     std::string filename;
 
-    // test
-    //const std::vector<const char*> input_args = { "items.csv", "discount.csv" };
-
     int i = 1;
     for (IObjects* object : initial_objects)
     {

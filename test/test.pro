@@ -4,6 +4,7 @@ TARGET = AmazingTests
 
 SOURCES += test.cc
 SOURCES += CsvReaderTest.cc
+SOURCES += ItemsTest.cc
 
 LIBS += -L$$OUT_PWD/../lib -lAmazingAPI
 LIBS += -lgtest -lgtest_main

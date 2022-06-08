@@ -16,6 +16,36 @@
 static std::string generateWhiteSpaces(size_t amount, size_t* veritcal_bar_postition = nullptr);
 static size_t count_digit(int number);
 
+bool ProcessedOrder::operator==(const ProcessedOrder& other) const
+{
+    if (this->discountPercent != other.discountPercent)
+    {
+        return false;
+    }
+    else if (this->finalPrice != other.finalPrice)
+    {
+        return false;
+    }
+    else if (this->priceWoDiscount != other.priceWoDiscount)
+    {
+        return false;
+    }
+    else if (this->quantity != other.quantity)
+    {
+        return false;
+    }
+    else if (this->taxPercent != other.taxPercent)
+    {
+        return false;
+    }
+    return true;
+}
+
+ProcessedOrders::ProcessedOrders() : mTotal{0}
+{
+
+}
+
 /**
 * Name            Tax   Disc.  U.price  Quant.  Price
 * ---------------------------------------------------

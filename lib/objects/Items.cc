@@ -8,6 +8,23 @@
 #define ITEMS_NUM_OF_COLS 4
 #define EAN13_LEN 13
 
+bool Item::operator==(const Item& other) const
+{
+    if (this->name != other.name)
+    {
+        return false;
+    }
+    else if (this->priceWoTax != other.priceWoTax)
+    {
+        return false;
+    }
+    else if (this->taxPercent != other.taxPercent)
+    {
+        return false;
+    }
+    return true;
+}
+
 void Items::operator<<(std::shared_ptr<IFileReader> reader) noexcept(false)
 {
     Item* item;
