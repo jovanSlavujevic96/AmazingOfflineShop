@@ -16,43 +16,6 @@
 static std::string generateWhiteSpaces(size_t amount, size_t* veritcal_bar_postition = nullptr);
 static size_t count_digit(int number);
 
-void ProcessedOrders::operator<<(std::shared_ptr<IFileReader> reader) noexcept(false)
-{
-    ProcessedOrder* item;
-    std::string key;
-
-    // clear map
-    mProcessedOrders.clear();
-
-    // pass expected number of columns
-    reader->setNumOfCols(PROC_ORDERS_NUM_OF_COLS);
-
-    // row reading loop
-    while (reader->read())
-    {
-        // read product name
-        key = reader->extractString();
-
-        // insert map element with key
-        item = &mProcessedOrders.insert(std::make_pair(key, ProcessedOrder())).first->second;
-
-        // read tax percentage
-        item->taxPercent = reader->extractFloat();
-
-        // read discount percentage
-        item->discountPercent = reader->extractFloat();
-
-        // read price without discount
-        item->priceWithoutDiscount = reader->extractDouble();
-
-        // read quantity
-        item->quantity = reader->extractFloat();
-
-        // read total price
-        item->finalPrice = reader->extractDouble();
-    }
-}
-
 /**
 * Name            Tax   Disc.  U.price  Quant.  Price
 * ---------------------------------------------------
@@ -118,7 +81,7 @@ void ProcessedOrders::operator>>(std::ofstream& writer) noexcept(false)
     writer << "Total" << generateWhiteSpaces(whitespaces) << mTotal;
 }
 
-void ProcessedOrders::processOrder(Orders* initialOrders, Items* items, Discounts* discounts) noexcept(false)
+void ProcessedOrders::processOrder(const Orders* initialOrders, const  Items* items, const  Discounts* discounts) noexcept(false)
 {
     std::map<uint64_t, Order>::const_iterator orderBegin;
     std::map<uint64_t, Order>::const_iterator orderEnd;
@@ -171,11 +134,6 @@ void ProcessedOrders::processOrder(Orders* initialOrders, Items* items, Discount
 
         mTotal += procOrder->finalPrice;
     }
-}
-
-const char* ProcessedOrders::getObjectType() const
-{
-    return "ProcessedOrders";
 }
 
 static std::string generateWhiteSpaces(size_t amount, size_t* veritcal_bar_postition)

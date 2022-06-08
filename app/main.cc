@@ -101,7 +101,7 @@ int main(int argc, char* argv[])
             txt_writer.close();
 
             // report success
-            std::cout << "Successfully written " << processed_orders.getObjectType() << " data into " << filename << std::endl;
+            std::cout << "Successfully processed orderd " << filename << std::endl;
         }
         catch (const std::exception& e)
         {

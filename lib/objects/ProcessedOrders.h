@@ -5,7 +5,6 @@
 #include <cstdint>
 #include <fstream>
 
-#include "IObjects.h"
 #include "Orders.h"
 #include "Discounts.h"
 #include "Items.h"
@@ -19,16 +18,13 @@ struct ProcessedOrder
     double finalPrice;
 };
 
-class ProcessedOrders : public IObjects
+class ProcessedOrders
 {
 public:
     ~ProcessedOrders() = default;
 
-    void operator<<(std::shared_ptr<IFileReader> reader) noexcept(false) override;
     void operator>>(std::ofstream& writer) noexcept(false);
-    void processOrder(Orders* initialOrders, Items* items, Discounts* discounts = nullptr) noexcept(false);
-
-    const char* getObjectType() const override;
+    void processOrder(const Orders* initialOrders, const  Items* items, const  Discounts* discounts = nullptr) noexcept(false);
 private:
     std::map<std::string, ProcessedOrder> mProcessedOrders;
     double mTotal;
