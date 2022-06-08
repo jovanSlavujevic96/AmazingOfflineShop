@@ -36,6 +36,10 @@ struct Order
      * @return false - order's quantity aren't matching
      */
     bool operator==(const Order& other) const;
+    /**
+     * @brief Overloaded perator. Oppostie of operator==
+     */
+    inline bool operator!=(const Order& other) const { return !(*this == other); }
 };
 
 /**
@@ -78,9 +82,31 @@ public:
      * @return std::map<uint64_t, Order>::const_iterator end
      */
     std::map<uint64_t, Order>::const_iterator getOrdersEnd() const;
+
+    /**
+     * @brief Get the Order number
+     *
+     * @return size_t - order number
+     */
+    size_t getOrderNum() const;
+    /**
+     * @brief Set the Order number
+     *
+     * @param order - order number
+     */
+    void setOrderNum(size_t order);
 private:
     /**
      * @brief Map of Order objects
      */
     std::map<uint64_t, Order> mOrders;
+    /**
+     * @brief Order Number
+     */
+    size_t mOrderNum = 0;
+
+    /**
+     * @brief Static order counter. Increases on every succesfully deserialization
+     */
+    inline static size_t OrderCount = 0;
 };

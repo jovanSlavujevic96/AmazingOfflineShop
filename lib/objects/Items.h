@@ -45,6 +45,10 @@ struct Item
      * @return false - items aren't matching
      */
     bool operator==(const Item& other) const;
+    /**
+     * @brief Overloaded perator. Oppostie of operator==
+     */
+    inline bool operator!=(const Item& other) const { return !(*this == other); }
 };
 
 /**

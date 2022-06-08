@@ -42,6 +42,8 @@ void Orders::operator<<(std::shared_ptr<IFileReader> reader) noexcept(false)
         // read quantity
         item->quantity = reader->extractFloat();
     }
+
+    mOrderNum = Orders::OrderCount++;
 }
 
 const char* Orders::getObjectType() const
@@ -57,4 +59,14 @@ std::map<uint64_t, Order>::const_iterator Orders::getOrdersBegin() const
 std::map<uint64_t, Order>::const_iterator Orders::getOrdersEnd() const
 {
     return mOrders.cend();
+}
+
+size_t Orders::getOrderNum() const
+{
+    return mOrderNum;
+}
+
+void Orders::setOrderNum(size_t order)
+{
+    mOrderNum = order;
 }

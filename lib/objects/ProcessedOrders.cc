@@ -13,7 +13,20 @@
 #define PRICE_MAX_LEN 9
 #define AMOUNT_MAX_LEN 9
 
+/**
+ * @brief Function which generates string with specified amount of spaces and vertial bar (optionally)
+ *
+ * @param[in] amount - amount of spaces
+ * @param[in] veritcal_bar_postition - pointer to position of vertical bar within string (optional/nullable)
+ * @return std::string - generated string
+ */
 static std::string generateWhiteSpaces(size_t amount, size_t* veritcal_bar_postition = nullptr);
+/**
+ * @brief Coutns number of digits within particular number
+ *
+ * @param[in] number - digit to be compared
+ * @return size_t - number of digits
+ */
 static size_t count_digit(int number);
 
 bool ProcessedOrder::operator==(const ProcessedOrder& other) const
@@ -41,7 +54,9 @@ bool ProcessedOrder::operator==(const ProcessedOrder& other) const
     return true;
 }
 
-ProcessedOrders::ProcessedOrders() : mTotal{0}
+ProcessedOrders::ProcessedOrders() :
+    mTotal{0},
+    mOrderNum{0}
 {
 
 }
@@ -61,10 +76,17 @@ void ProcessedOrders::operator>>(std::ofstream& writer) noexcept(false)
     size_t veritcal_bar_pos;
     std::string name;
 
+    if (mProcessedOrders.empty())
+    {
+        throw std::runtime_error("Didn't processed any order yet.");
+    }
+
     // set fixed decimal precision print
     writer << std::fixed << std::setprecision(2);
 
     // enter table header
+    writer << "Order #" << mOrderNum << std::endl;
+    writer << "------------------------------------------------------------------------------------" << std::endl;
     writer << "Name                  |     Tax  |   Disc.  |    U.price  |     Quant.  |      Price" << std::endl;
     writer << "------------------------------------------------------------------------------------" << std::endl;
 
@@ -92,9 +114,9 @@ void ProcessedOrders::operator>>(std::ofstream& writer) noexcept(false)
         // append item discount percent
         writer << generateWhiteSpaces(whitespaces, &veritcal_bar_pos) << it->second.discountPercent;
 
-        whitespaces = COLS_MIN_DISTANCE + PRICE_MAX_LEN - count_digit((int)it->second.priceWithoutDiscount) - DECIMAL_DIGITS;
+        whitespaces = COLS_MIN_DISTANCE + PRICE_MAX_LEN - count_digit((int)it->second.priceWoDiscount) - DECIMAL_DIGITS;
         // append item price wo discount
-        writer << generateWhiteSpaces(whitespaces, &veritcal_bar_pos) << it->second.priceWithoutDiscount;
+        writer << generateWhiteSpaces(whitespaces, &veritcal_bar_pos) << it->second.priceWoDiscount;
 
         whitespaces = COLS_MIN_DISTANCE + AMOUNT_MAX_LEN - count_digit((int)it->second.quantity) - DECIMAL_DIGITS;
         // append item quantity
@@ -156,14 +178,15 @@ void ProcessedOrders::processOrder(const Orders* initialOrders, const  Items* it
 
         // calculate price without discount
         // PRICE WO DISCOUNT = PRICE WO TAX * (1 + TAX PERCENT / 100) * QUANTITY
-        procOrder->priceWithoutDiscount = currentItem->priceWoTax * (1.0f + currentItem->taxPercent/100) * procOrder->quantity;
+        procOrder->priceWoDiscount = currentItem->priceWoTax * (1.0f + currentItem->taxPercent/100) * procOrder->quantity;
 
         // calculate final price
         // TOTAL PRICE = PRICE WO DISCOUNT * (1 - DISCOUNT PERCENT / 100)
-        procOrder->finalPrice = procOrder->priceWithoutDiscount * (1.0f - procOrder->discountPercent / 100);
+        procOrder->finalPrice = procOrder->priceWoDiscount * (1.0f - procOrder->discountPercent / 100);
 
         mTotal += procOrder->finalPrice;
     }
+    mOrderNum = initialOrders->getOrderNum();
 }
 
 static std::string generateWhiteSpaces(size_t amount, size_t* veritcal_bar_postition)

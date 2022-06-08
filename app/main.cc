@@ -37,9 +37,6 @@ int main(int argc, char* argv[])
             // read command line input if there is no proper argument
             std::cout << "Enter " << object->getObjectType() << " CSV file: ";
             std::cin >> filename;
-
-            // test
-            //filename = input_args[i - 1];
         }
         i++;
 
@@ -89,7 +86,7 @@ int main(int argc, char* argv[])
             // generate processed_orders
             processed_orders.processOrder(&orders, &items, &discounts);
 
-            filename = "processed_" + filename.substr(0, filename.find(".csv")) + ".txt";
+            filename = "processed_order_" + std::to_string(orders.getOrderNum()) + ".txt";
             txt_writer.open(filename);
 
             // write processed_orders

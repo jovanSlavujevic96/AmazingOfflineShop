@@ -36,6 +36,10 @@ struct Discount
      * @return false - different discount percents
      */
     bool operator==(const Discount& other) const;
+    /**
+     * @brief Overloaded perator. Oppostie of operator==
+     */
+    inline bool operator!=(const Discount& other) const { return !(*this == other); }
 };
 
 /**

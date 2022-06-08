@@ -74,7 +74,7 @@ std::string CsvReader::extract() noexcept(false)
     {
         // search for semicolon
         mRowEndOffset = mRow.find(';', mRowStartOffset);
-        if (mRowEndOffset == std::string::npos)
+        if (mRowEndOffset == (int)std::string::npos)
         {
             throw std::runtime_error("Can't find cell");
         }

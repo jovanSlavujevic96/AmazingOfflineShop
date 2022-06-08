@@ -4,7 +4,7 @@ static inline void eraseWhitespacesFromString(std::string& str)
 {
     int start = -1;
     int end = 0;
-    for (int i = 0; i < str.length(); i++)
+    for (int i = 0; i < (int)str.length(); i++)
     {
         if (str[i] == '\t' || str[i] == ' ')
         {

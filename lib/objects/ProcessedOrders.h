@@ -55,6 +55,10 @@ struct ProcessedOrder
      * @return false - processed order's quantity aren't matching
      */
     bool operator==(const ProcessedOrder& other) const;
+    /**
+     * @brief Overloaded perator. Oppostie of operator==
+     */
+    inline bool operator!=(const ProcessedOrder& other) const { return !(*this == other); }
 };
 
 /**
@@ -97,4 +101,8 @@ private:
      * @brief total price of orders
      */
     double mTotal;
+    /**
+     * @brief Order Number
+     */
+    size_t mOrderNum;
 };
