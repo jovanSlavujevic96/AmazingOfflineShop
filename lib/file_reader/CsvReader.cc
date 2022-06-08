@@ -29,13 +29,7 @@ void CsvReader::open(std::string filename) noexcept(false)
     }
 }
 
-void CsvReader::close()
-{
-    // close opened file
-    mReader.close();
-}
-
-bool CsvReader::readLine(std::string* line) noexcept(false)
+bool CsvReader::read(std::string* line) noexcept(false)
 {
     if (!mReader.is_open())
     {
@@ -59,7 +53,7 @@ bool CsvReader::readLine(std::string* line) noexcept(false)
     return false;
 }
 
-std::string CsvReader::readCell() noexcept(false)
+std::string CsvReader::extract() noexcept(false)
 {
     // check there are more cells within row
     if (mColsCounter >= mNumOfCols)

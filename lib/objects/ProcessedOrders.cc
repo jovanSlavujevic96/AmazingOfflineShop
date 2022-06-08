@@ -3,7 +3,6 @@
 #include <cstdint>
 #include <cmath>
 
-#include "file_reader/TextReader.h"
 #include "ProcessedOrders.h"
 
 #define PROC_ORDERS_NUM_OF_COLS 6
@@ -29,39 +28,39 @@ void ProcessedOrders::operator<<(std::shared_ptr<IFileReader> reader) noexcept(f
     reader->setNumOfCols(PROC_ORDERS_NUM_OF_COLS);
 
     // row reading loop
-    while (reader->readLine())
+    while (reader->read())
     {
         // read product name
-        key = reader->readStringCell();
+        key = reader->extractString();
 
         // insert map element with key
         item = &mProcessedOrders.insert(std::make_pair(key, ProcessedOrder())).first->second;
 
         // read tax percentage
-        item->taxPercent = reader->readFloatCell();
+        item->taxPercent = reader->extractFloat();
 
         // read discount percentage
-        item->discountPercent = reader->readFloatCell();
+        item->discountPercent = reader->extractFloat();
 
         // read price without discount
-        item->priceWithoutDiscount = reader->readDoubleCell();
+        item->priceWithoutDiscount = reader->extractDouble();
 
         // read quantity
-        item->quantity = reader->readFloatCell();
+        item->quantity = reader->extractFloat();
 
         // read total price
-        item->finalPrice = reader->readDoubleCell();
+        item->finalPrice = reader->extractDouble();
     }
 }
 
 /**
-* Name            Tax  Disc.  U.price Quant.   Price
-* --------------------------------------------------
+* Name            Tax   Disc.  U.price  Quant.  Price
+* ---------------------------------------------------
 * Fairy Dust	  8.80 	 0.00     4.99   3.00   14,97
 * Helping Hand	 12.00 	30.00   699.99   1.00  489.99
-* Freezing Coat 12.00 	15.00   124.99   1.00   87.49
-* --------------------------------------------------
-* Total                                       592.45
+* Freezing Coat  12.00 	15.00   124.99   1.00   87.49
+* ---------------------------------------------------
+* Total                                        592.45
 **/
 void ProcessedOrders::operator>>(std::ofstream& writer) noexcept(false)
 {

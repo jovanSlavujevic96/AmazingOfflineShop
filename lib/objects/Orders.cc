@@ -26,16 +26,16 @@ void Orders::operator<<(std::shared_ptr<IFileReader> reader) noexcept(false)
     };
 
     // row reading loop
-    while (reader->readLine())
+    while (reader->read())
     {
         // read EAN-13
-        key = reader->readULongLongCell(validateEan13);
+        key = reader->extractULongLong(validateEan13);
 
         // insert map element with EAN-13 key
         item = &mOrders.insert(std::make_pair(key, Order())).first->second;
 
         // read quantity
-        item->quantity = reader->readFloatCell();
+        item->quantity = reader->extractFloat();
     }
 }
 

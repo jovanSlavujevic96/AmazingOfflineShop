@@ -16,6 +16,4 @@ add_library(AmazingAPI STATIC
 	"${CMAKE_CURRENT_SOURCE_DIR}/file_reader/IFileReader.cc"
 	"${CMAKE_CURRENT_SOURCE_DIR}/file_reader/CsvReader.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/file_reader/CsvReader.cc"
-	"${CMAKE_CURRENT_SOURCE_DIR}/file_reader/TextReader.h"
-	"${CMAKE_CURRENT_SOURCE_DIR}/file_reader/TextReader.cc"
 )

@@ -31,22 +31,22 @@ void Items::operator<<(std::shared_ptr<IFileReader> reader) noexcept(false)
     };
 
     // row reading loop
-    while (reader->readLine())
+    while (reader->read())
     {
         // read EAN-13
-        key = reader->readULongLongCell(validateEan13);
+        key = reader->extractULongLong(validateEan13);
 
         // insert map element with EAN-13 key
         item = &mItems.insert(std::make_pair(key, Item())).first->second;
 
         // read product name
-        item->name = reader->readStringCell();
+        item->name = reader->extractString();
 
         // read price without taxes
-        item->priceWoTax = reader->readDoubleCell();
+        item->priceWoTax = reader->extractDouble();
 
         // read tax percentage
-        item->taxPercent = reader->readFloatCell();
+        item->taxPercent = reader->extractFloat();
     }
 }
 
