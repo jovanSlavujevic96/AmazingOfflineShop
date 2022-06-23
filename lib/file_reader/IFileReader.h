@@ -2,7 +2,7 @@
  * @file IFileReader.h
  * @author Jovan Slavujevic (slavujevic.jovan.96@gmail.com)
  * @brief IFileReader interface definition
- * @version 0.1
+ * @version 0.2
  * @date 2022-06-08
  *
  * @copyright Copyright (c) 2022
@@ -127,4 +127,13 @@ protected:
      * @return std::string extracted cell
      */
     virtual std::string extract() noexcept(false) = 0;
+
+    /**
+     * @brief Erase special characters from string (from front or back of string)
+     *
+     * @param[out] str - string to be processed
+     * @param[in]  charGroup - group of special characters
+     * @param[in]  front - erase from front or back
+     */
+    void eraseCharactersFromString(std::string& str, const char* charGroup, bool front);
 };

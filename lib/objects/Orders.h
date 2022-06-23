@@ -2,7 +2,7 @@
  * @file Orders.h
  * @author Jovan Slavujevic (slavujevic.jovan.96@gmail.com)
  * @brief Order structure & Orders class definition
- * @version 0.1
+ * @version 0.2
  * @date 2022-06-08
  *
  * @copyright Copyright (c) 2022
@@ -17,11 +17,17 @@
 
 #include "IObjects.h"
 
+class ProcessedOrders;
+
 /**
  * @brief Order object structure
  */
 struct Order
 {
+    /**
+     * @brief EAN 13 ID
+     */
+    uint64_t ean13;
     /**
      * @brief order quantity
      */
@@ -48,6 +54,7 @@ struct Order
  */
 class Orders : public IObjects
 {
+    friend class ProcessedOrders;
 public:
     /**
      * @brief Destroy the Orders object
@@ -69,32 +76,6 @@ public:
      * @return name in string format
      */
     const char* getObjectType() const override;
-
-    /**
-     * @brief Get the Orders map beginning iterator
-     *
-     * @return std::map<uint64_t, Order>::const_iterator begin
-     */
-    std::map<uint64_t, Order>::const_iterator getOrdersBegin() const;
-    /**
-     * @brief Get the Orders map ending iterator
-     *
-     * @return std::map<uint64_t, Order>::const_iterator end
-     */
-    std::map<uint64_t, Order>::const_iterator getOrdersEnd() const;
-
-    /**
-     * @brief Get the Order number
-     *
-     * @return size_t - order number
-     */
-    size_t getOrderNum() const;
-    /**
-     * @brief Set the Order number
-     *
-     * @param order - order number
-     */
-    void setOrderNum(size_t order);
 private:
     /**
      * @brief Map of Order objects

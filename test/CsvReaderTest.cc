@@ -276,7 +276,7 @@ TEST(CsvReader_TestSuite, SucceedExtract_MultipleColumns)
     constexpr uint64_t inputULong = 555333;
     constexpr float inputFloat = 5.5f;
     constexpr double inputDouble = 3.300452;
-    const std::string inputString = "Hello wolrd";
+    const std::string inputString = "Hello world";
 
     reader.setNumOfCols(4);
 
@@ -295,6 +295,37 @@ TEST(CsvReader_TestSuite, SucceedExtract_MultipleColumns)
     EXPECT_TRUE(reader.extractFloat() == inputFloat);
     EXPECT_TRUE(reader.extractDouble() == inputDouble);
     EXPECT_TRUE(reader.extractString() == inputString);
+
+    // make sure that file has been deleted
+    std::remove(filename);
+}
+
+TEST(CsvReader_TestSuite, SucceedExtract_CrLfNewline)
+{
+    CsvReader reader;
+    const char* filename = "test.csv";
+    constexpr uint64_t inputULong = 555333;
+    constexpr float inputFloat = 5.5f;
+    constexpr double inputDouble = 3.300452;
+    const std::string inputString = "Hello world";
+
+    reader.setNumOfCols(4);
+
+    // create file with ofstream, write data, end line with carriage return + line feed & close it
+    std::ofstream writer(filename);
+    writer << inputString << ";\t" << std::to_string(inputFloat) << ";\t\t";
+    writer << std::to_string(inputDouble) << ";\t" << std::to_string(inputULong) << "\r\n";
+    writer.close();
+
+    // open the file with reader & read line
+    reader.open(filename);
+    reader.read();
+
+    // expect raeder to read good values
+    EXPECT_TRUE(reader.extractString() == inputString);
+    EXPECT_TRUE(reader.extractFloat() == inputFloat);
+    EXPECT_TRUE(reader.extractDouble() == inputDouble);
+    EXPECT_TRUE(reader.extractULongLong() == inputULong);
 
     // make sure that file has been deleted
     std::remove(filename);

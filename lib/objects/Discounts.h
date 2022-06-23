@@ -2,7 +2,7 @@
  * @file Discounts.h
  * @author Jovan Slavujevic (slavujevic.jovan.96@gmail.com)
  * @brief Discount structure & Discounts class definition
- * @version 0.1
+ * @version 0.2
  * @date 2022-06-08
  *
  * @copyright Copyright (c) 2022
@@ -16,6 +16,8 @@
 
 #include "IObjects.h"
 #include "file_reader/CsvReader.h"
+
+class ProcessedOrders;
 
 /**
  * @brief Discount object structure
@@ -48,6 +50,7 @@ struct Discount
  */
 class Discounts : public IObjects
 {
+    friend class ProcessedOrders;
 public:
     /**
      * @brief Destroy the Discounts object
@@ -69,14 +72,6 @@ public:
      * @return name in string format
      */
     const char* getObjectType() const override;
-
-    /**
-     * @brief Get the Discount object from map
-     *
-     * @param[in] key - EAN 13 ID
-     * @return const Discount* - pointer to discount object if fount it or NULL if not
-     */
-    const Discount* getDiscount(uint64_t key) const;
 private:
     /**
      * @brief Map of Discount objects

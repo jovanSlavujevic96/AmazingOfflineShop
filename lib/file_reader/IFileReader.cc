@@ -1,42 +1,20 @@
 #include "IFileReader.h"
 
-static inline void eraseWhitespacesFromString(std::string& str)
-{
-    int start = -1;
-    int end = 0;
-    for (int i = 0; i < (int)str.length(); i++)
-    {
-        if (str[i] == '\t' || str[i] == ' ')
-        {
-            if (start == -1)
-            {
-                start = i;
-            }
-            end = i;
-        }
-        else
-        {
-            break;
-        }
-    }
-    if (start != -1)
-    {
-        str.erase(start, end + 1);
-    }
-}
-
 double IFileReader::extractDouble(std::function<bool(const std::string&, std::string&)> validate) noexcept(false)
 {
     // read cell
     std::string cell = this->extract();
 
     // remove whitespaces & tabs
-    eraseWhitespacesFromString(cell);
+    this->eraseCharactersFromString(cell, "\t ", true);
+
+    // remove newline
+    this->eraseCharactersFromString(cell, "\r\n", false);
 
     // validate cell
     if (!std::regex_match(cell, cPositiveDecReg))
     {
-        throw std::runtime_error(cell + " is not a decimal number.");
+        throw std::runtime_error('"' + cell + '"' + " is not a decimal number.");
     }
 
     // additional validation
@@ -45,7 +23,7 @@ double IFileReader::extractDouble(std::function<bool(const std::string&, std::st
         std::string error;
         if (!validate(cell, error))
         {
-            throw std::runtime_error(cell + " is not valid. " + error);
+            throw std::runtime_error('"' + cell + '"' + " is not valid. " + error);
         }
     }
 
@@ -59,12 +37,15 @@ float IFileReader::extractFloat(std::function<bool(const std::string&, std::stri
     std::string cell = this->extract();
 
     // remove whitespaces & tabs
-    eraseWhitespacesFromString(cell);
+    this->eraseCharactersFromString(cell, "\t ", true);
+
+    // remove newline
+    this->eraseCharactersFromString(cell, "\r\n", false);
 
     // validate third cell
     if (!std::regex_match(cell, cPositiveDecReg))
     {
-        throw std::runtime_error(cell + " is not a decimal number.");
+        throw std::runtime_error('"' + cell + '"' + " is not a decimal number.");
     }
 
     // additional validation
@@ -73,7 +54,7 @@ float IFileReader::extractFloat(std::function<bool(const std::string&, std::stri
         std::string error;
         if (!validate(cell, error))
         {
-            throw std::runtime_error(cell + " is not valid. " + error);
+            throw std::runtime_error('"' + cell + '"' + " is not valid. " + error);
         }
     }
 
@@ -87,12 +68,15 @@ uint64_t IFileReader::extractULongLong(std::function<bool(const std::string&, st
     std::string cell = this->extract();
 
     // remove whitespaces & tabs
-    eraseWhitespacesFromString(cell);
+    this->eraseCharactersFromString(cell, "\t ", true);
+
+    // remove newline
+    this->eraseCharactersFromString(cell, "\r\n", false);
 
     // validate cell
     if (!std::regex_match(cell, cPositiveNumReg))
     {
-        throw std::runtime_error(cell + " is not a natural number.");
+        throw std::runtime_error('"' + cell + '"' + " is not a natural number.");
     }
 
     // additional validation
@@ -101,7 +85,7 @@ uint64_t IFileReader::extractULongLong(std::function<bool(const std::string&, st
         std::string error;
         if (!validate(cell, error))
         {
-            throw std::runtime_error(cell + " is not valid. " + error);
+            throw std::runtime_error('"' + cell + '"' + " is not valid. " + error);
         }
     }
 
@@ -115,7 +99,10 @@ std::string IFileReader::extractString(std::function<bool(const std::string&, st
     std::string cell = this->extract();
 
     // remove whitespaces & tabs
-    eraseWhitespacesFromString(cell);
+    this->eraseCharactersFromString(cell, "\t ", true);
+
+    // remove newline
+    this->eraseCharactersFromString(cell, "\r\n", false);
 
     // additional validation
     if (validate)
@@ -123,7 +110,7 @@ std::string IFileReader::extractString(std::function<bool(const std::string&, st
         std::string error;
         if (!validate(cell, error))
         {
-            throw std::runtime_error(cell + " is not valid. " + error);
+            throw std::runtime_error('"' + cell + '"' + " is not valid. " + error);
         }
     }
 
@@ -138,4 +125,74 @@ int IFileReader::getNumOfCols() const
 void IFileReader::setNumOfCols(int num)
 {
     mNumOfCols = num;
+}
+
+void IFileReader::eraseCharactersFromString(std::string& str, const char* charGroup, bool front)
+{
+    // erase indexes
+    int eraseStart = -1;
+    int eraseEnd = -1;
+
+    // front/back utils
+    int step;
+    int beginIdx;
+    std::function<bool(int)> check;
+
+    // assign utils values
+    if (front)
+    {
+        step = 1;
+        beginIdx = 0;
+        check = [&](int i)
+        {
+            return i < (int)str.length();
+        };
+    }
+    else
+    {
+        step = -1;
+        beginIdx = (int)str.length() - 1;
+        check = [](int i)
+        {
+            return i >= 0;
+        };
+    }
+
+    // iterate through string
+    for (int i = beginIdx; check(i); i += step)
+    {
+        // iterate to character group
+        for (int j = 0; j < strlen(charGroup); j++)
+        {
+            if (str[i] == charGroup[j])
+            {
+                if (front)
+                {
+                    if (eraseStart == -1)
+                    {
+                        eraseStart = i;
+                    }
+                    eraseEnd = i;
+                }
+                else
+                {
+                    if (eraseEnd == -1)
+                    {
+                        eraseEnd = i;
+                    }
+                    eraseStart = i;
+                }
+                break;
+            }
+        }
+        // exit condition
+        if (eraseEnd != i && eraseStart != i)
+        {
+            break;
+        }
+    }
+    if (eraseStart != -1)
+    {
+        str.erase(eraseStart, eraseEnd + 1);
+    }
 }

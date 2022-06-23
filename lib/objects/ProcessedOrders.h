@@ -2,7 +2,7 @@
  * @file ProccesedOrders.h
  * @author Jovan Slavujevic (slavujevic.jovan.96@gmail.com)
  * @brief ProccesedOrder structure & ProccesedOrders class definition
- * @version 0.1
+ * @version 0.2
  * @date 2022-06-08
  *
  * @copyright Copyright (c) 2022
@@ -38,9 +38,9 @@ struct ProcessedOrder
      */
     float quantity;
     /**
-     * @brief processed order price without discount
+     * @brief processed order price for unit
      */
-    double priceWoDiscount;
+    double unitPrice;
     /**
      * @brief processed order final price (including quantity) 
      */
@@ -92,6 +92,22 @@ public:
      * @param[in] discounts - discounts (optional/nullable)
      */
     void processOrder(const Orders* initialOrders, const  Items* items, const  Discounts* discounts = nullptr) noexcept(false);
+
+    /**
+     * @brief Get the Order Num
+     *
+     * @return order num
+     */
+    size_t getOrderNum() const;
+
+    /**
+     * @brief Get the ProcessedOrder object from map
+     *
+     * @param[in] itemName - name of product (item)
+     *
+     * @return processed order if exists
+     */
+    const ProcessedOrder* getProcessedOrder(std::string itemName) const;
 private:
     /**
      * @brief Map of ProcessedOrder objects

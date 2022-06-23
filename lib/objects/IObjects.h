@@ -2,7 +2,7 @@
  * @file IObjects.h
  * @author Jovan Slavujevic (slavujevic.jovan.96@gmail.com)
  * @brief IObjects interface definition
- * @version 0.1
+ * @version 0.2
  * @date 2022-06-08
  *
  * @copyright Copyright (c) 2022

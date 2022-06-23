@@ -73,11 +73,20 @@ std::string CsvReader::extract() noexcept(false)
     else
     {
         // search for semicolon
-        mRowEndOffset = mRow.find(';', mRowStartOffset);
-        if (mRowEndOffset == (int)std::string::npos)
+        const size_t semicolonPos = mRow.find(';', mRowStartOffset);
+        if (semicolonPos == std::string::npos)
         {
-            throw std::runtime_error("Can't find cell");
+            mRowEndOffset = -1;
         }
+        else
+        {
+            mRowEndOffset = static_cast<int>(semicolonPos);
+        }
+    }
+
+    if (mRowStartOffset == mRowEndOffset || mRowEndOffset == -1)
+    {
+        throw std::runtime_error("Can't find cell");
     }
 
     // increment columns counter

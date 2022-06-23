@@ -7,11 +7,11 @@ add_executable(AmazingShopTest
 	"${CMAKE_CURRENT_SOURCE_DIR}/test.cc"
 	"${CMAKE_CURRENT_SOURCE_DIR}/CsvReaderTest.cc"
 	"${CMAKE_CURRENT_SOURCE_DIR}/ItemsTest.cc"
+	"${CMAKE_CURRENT_SOURCE_DIR}/ProcessedOrdersTest.cc"
 )
 target_link_libraries(AmazingShopTest PUBLIC
 	GTest::gtest
 	GTest::gtest_main
-#	GTest::gmock
 	AmazingAPI
 )
 target_include_directories(AmazingShopTest PUBLIC

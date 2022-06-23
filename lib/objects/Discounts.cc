@@ -50,15 +50,3 @@ const char* Discounts::getObjectType() const
 {
     return "Discounts";
 }
-
-const Discount* Discounts::getDiscount(uint64_t key) const
-{
-    try
-    {
-        return &mDiscounts.at(key);
-    }
-    catch (...)
-    {
-        return nullptr;
-    }
-}

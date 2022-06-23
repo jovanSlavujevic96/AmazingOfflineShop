@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
             // generate processed_orders
             processed_orders.processOrder(&orders, &items, &discounts);
 
-            filename = "processed_order_" + std::to_string(orders.getOrderNum()) + ".txt";
+            filename = "processed_order_" + std::to_string(processed_orders.getOrderNum()) + ".txt";
             txt_writer.open(filename);
 
             // write processed_orders

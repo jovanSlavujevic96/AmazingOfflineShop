@@ -5,7 +5,11 @@
 
 bool Order::operator==(const Order& other) const
 {
-    return this->quantity == other.quantity;
+    if (this->quantity != other.quantity)
+    {
+        return false;
+    }
+    return this->ean13 == other.ean13;
 }
 
 void Orders::operator<<(std::shared_ptr<IFileReader> reader) noexcept(false)
@@ -49,24 +53,4 @@ void Orders::operator<<(std::shared_ptr<IFileReader> reader) noexcept(false)
 const char* Orders::getObjectType() const
 {
     return "Orders";
-}
-
-std::map<uint64_t, Order>::const_iterator Orders::getOrdersBegin() const
-{
-    return mOrders.cbegin();
-}
-
-std::map<uint64_t, Order>::const_iterator Orders::getOrdersEnd() const
-{
-    return mOrders.cend();
-}
-
-size_t Orders::getOrderNum() const
-{
-    return mOrderNum;
-}
-
-void Orders::setOrderNum(size_t order)
-{
-    mOrderNum = order;
 }
